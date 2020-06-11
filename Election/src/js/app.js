@@ -73,7 +73,6 @@ App = {
       electionInstance = instance;
       return electionInstance.candidatesCount();
     }).then(function(candidatesCount) {
-      console.log(candidatesCount);
       var candidatesResults = $("#candidatesResults");
       candidatesResults.empty();
 
