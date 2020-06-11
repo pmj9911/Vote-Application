@@ -6,11 +6,17 @@ contract Election{
 		string name;
 		uint voteCount;
 	}
+	// store accounts that have voted
+	mapping(address => bool ) public voters;
 	// Store Candidates
 	// fetch Candidates
 	mapping(uint => Candidate) public candidates;
 	// store Candidates count
 	uint public candidatesCount;
+
+	event votedEvent(
+		uint indexed _candidateId
+	);
 	constructor() public {
 		addCandidate("Candidate 1");
 		addCandidate("Candidate 2");
@@ -19,5 +25,12 @@ contract Election{
 	function addCandidate(string memory _name) private{
 		candidatesCount++;
 		candidates[candidatesCount] = Candidate(candidatesCount,_name,0);
+	}
+	function vote(uint  _candidateId) public{
+		require(!voters[msg.sender]);
+		require(_candidateId > 0 && _candidateId <= candidatesCount);
+		voters[msg.sender] = true;
+		candidates[_candidateId].voteCount ++;
+		emit votedEvent(_candidateId);
 	}
 }
